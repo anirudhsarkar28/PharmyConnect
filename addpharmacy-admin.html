@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View/Add Pharmacy - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background-color: #009688;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00796b;
+        }
+
+        .pharmacy-list {
+            margin-top: 20px;
+            list-style: none;
+        }
+
+        .pharmacy-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-top: 20px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <header>View/Add Pharmacy - PharmyConnect</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="card">
+                <h3>Add New Pharmacy</h3>
+                <div class="form-group">
+                    <label for="pharmacyName">Pharmacy Name:</label>
+                    <input type="text" id="pharmacyName" placeholder="Enter pharmacy name">
+                </div>
+                <div class="form-group">
+                    <label for="pharmacyAddress">Pharmacy Address:</label>
+                    <input type="text" id="pharmacyAddress" placeholder="Enter pharmacy address">
+                </div>
+                <button class="btn" id="addPharmacyBtn">Add Pharmacy</button>
+                <div class="success-message" id="successMessage" style="display: none;">
+                    Pharmacy added successfully!
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Search Pharmacies</h3>
+                <div class="search-bar">
+                    <input type="text" id="searchBar" placeholder="Search by name or address">
+                </div>
+                <h3>Existing Pharmacies</h3>
+                <ul class="pharmacy-list" id="pharmacyList">
+                    <!-- Dynamic Pharmacy List will appear here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data for existing pharmacies
+        let pharmacies = [
+            { name: 'City Pharmacy', address: '123 Main St' },
+            { name: 'Green Valley Pharmacy', address: '456 Elm St' },
+            { name: 'Sunrise Pharmacy', address: '789 Oak St' }
+        ];
+
+        const pharmacyNameInput = document.getElementById('pharmacyName');
+        const pharmacyAddressInput = document.getElementById('pharmacyAddress');
+        const addPharmacyBtn = document.getElementById('addPharmacyBtn');
+        const pharmacyList = document.getElementById('pharmacyList');
+        const successMessage = document.getElementById('successMessage');
+        const searchBar = document.getElementById('searchBar');
+
+        // Function to update the pharmacy list dynamically
+        function updatePharmacyList(filteredPharmacies = pharmacies) {
+            pharmacyList.innerHTML = ''; // Clear the current list
+            filteredPharmacies.forEach((pharmacy, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${pharmacy.name} - ${pharmacy.address}`;
+                pharmacyList.appendChild(li);
+            });
+        }
+
+        // Handle Add Pharmacy Button Click
+        addPharmacyBtn.addEventListener('click', () => {
+            const pharmacyName = pharmacyNameInput.value.trim();
+            const pharmacyAddress = pharmacyAddressInput.value.trim();
+
+            if (pharmacyName && pharmacyAddress) {
+                // Add new pharmacy to the list
+                pharmacies.push({ name: pharmacyName, address: pharmacyAddress });
+
+                // Clear the form inputs
+                pharmacyNameInput.value = '';
+                pharmacyAddressInput.value = '';
+
+                // Display success message
+                successMessage.style.display = 'block';
+
+                // Update the pharmacy list
+                updatePharmacyList();
+
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            } else {
+                alert('Please fill in both fields.');
+            }
+        });
+
+        // Handle search bar input
+        searchBar.addEventListener('input', () => {
+            const searchQuery = searchBar.value.toLowerCase();
+
+            // Filter pharmacies based on search query
+            const filteredPharmacies = pharmacies.filter(pharmacy =>
+                pharmacy.name.toLowerCase().includes(searchQuery) ||
+                pharmacy.address.toLowerCase().includes(searchQuery)
+            );
+
+            updatePharmacyList(filteredPharmacies);
+        });
+
+        // Initialize the pharmacy list on page load
+        updatePharmacyList();
+    </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .alerts {
+            background-color: #ffeeba;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .logs {
+            font-size: 0.9em;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .logs p {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+
+        .btn {
+            background-color: #009688;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00796b;
+        }
+    </style>
+</head>
+<body>
+    <header>Admin Dashboard - PharmyConnect</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="addhospital-admin.html">Hospital information</a></li>
+                <li><a href="addpharmacy-admin.html">Pharmacy information</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="card">
+                <h3>Summary Statistics</h3>
+                <p>Total Hospitals: <span id="totalHospitals">0</span></p>
+                <p>Total Pharmacies: <span id="totalPharmacies">0</span></p>
+                <p>Active Alerts: <span id="activeAlerts">0</span></p>
+            </div>
+
+            <div class="card">
+                <h3>Manage Hospitals</h3>
+                <button class="btn" id="addHospitalBtn">Add New Hospital</button>
+                <p id="hospitalList">No hospitals added yet.</p>
+            </div>
+
+            <div class="card">
+                <h3>Manage Pharmacies</h3>
+                <button class="btn" id="addPharmacyBtn">Add New Pharmacy</button>
+                <p id="pharmacyList">No pharmacies added yet.</p>
+            </div>
+
+            <div class="card alerts">
+                <h3>Alerts</h3>
+                <p id="alertMessage">No active alerts at the moment.</p>
+            </div>
+
+            <div class="card logs">
+                <h3>Recent Activity Logs</h3>
+                <div id="logsContainer">
+                    <p>No activity logs available.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to simulate data and add dynamic functionality
+        const addHospitalBtn = document.getElementById('addHospitalBtn');
+        const addPharmacyBtn = document.getElementById('addPharmacyBtn');
+
+        addHospitalBtn.addEventListener('click', () => {
+            alert('Redirecting to Add Hospital Page...');
+            // Add functionality to navigate to hospital add page
+        });
+
+        addPharmacyBtn.addEventListener('click', () => {
+            alert('Redirecting to Add Pharmacy Page...');
+            // Add functionality to navigate to pharmacy add page
+        });
+
+        // Simulate data for statistics
+        document.getElementById('totalHospitals').textContent = 10; // Example hospital count
+        document.getElementById('totalPharmacies').textContent = 5; // Example pharmacy count
+        document.getElementById('activeAlerts').textContent = 2; // Example active alert count
+    </script>
+</body>
+</html>

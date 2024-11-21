@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports and Analytics - PharmyConnect</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .analytics-chart {
+            width: 100%;
+            height: 300px;
+        }
+
+        .report-list {
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .report-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .report-list button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .report-list button:hover {
+            background-color: #00796b;
+        }
+    </style>
+</head>
+<body>
+    <header>Reports and Analytics - PharmyConnect</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="Pharmacy-Manager-Dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Analytics Overview Section -->
+            <div class="card">
+                <h3>Inventory Analysis</h3>
+                <canvas id="inventoryChart" class="analytics-chart"></canvas>
+                <script>
+                    var ctx = document.getElementById('inventoryChart').getContext('2d');
+                    var inventoryChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+                            datasets: [{
+                                label: 'Quantity in Stock',
+                                data: [100, 200, 50, 30, 300],
+                                backgroundColor: 'rgba(38, 166, 154, 0.2)',
+                                borderColor: 'rgba(38, 166, 154, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+
+            <!-- Sales Analytics Section -->
+            <div class="card">
+                <h3>Sales Analytics</h3>
+                <canvas id="salesChart" class="analytics-chart"></canvas>
+                <script>
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    var salesChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                            datasets: [{
+                                label: 'Sales Over Time',
+                                data: [120, 150, 100, 170, 180, 200],
+                                borderColor: 'rgba(0, 150, 136, 1)',
+                                fill: false,
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+
+            <!-- Recent Reports Section -->
+            <div class="card">
+                <h3>Recent Reports</h3>
+                <ul class="report-list">
+                    <li>Inventory Report - <button>Download</button></li>
+                    <li>Sales Report - <button>Download</button></li>
+                    <li>Stock Analysis Report - <button>Download</button></li>
+                    <li>Batch Expiry Report - <button>Download</button></li>
+                    <li>Low Stock Report - <button>Download</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

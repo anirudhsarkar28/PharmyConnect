@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-size: 1em;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #00796b;
+        }
+
+        .staff-list {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 15px;
+        }
+
+        .staff-list ul {
+            list-style: none;
+        }
+
+        .staff-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .staff-list li span {
+            color: #555;
+        }
+
+        .remove-button {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .remove-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>User Management - PharmyConnect</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="Pharmacy-Manager-Dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Add Staff Form -->
+            <div class="card">
+                <h3>Add New Staff</h3>
+                <div class="form-group">
+                    <label for="staffName">Staff Name:</label>
+                    <input type="text" id="staffName" placeholder="Enter staff name">
+                </div>
+                <div class="form-group">
+                    <label for="staffEmail">Staff Email:</label>
+                    <input type="email" id="staffEmail" placeholder="Enter staff email">
+                </div>
+                <button class="button" onclick="addStaff()">Add Staff</button>
+            </div>
+
+            <!-- Staff List -->
+            <div class="card staff-list">
+                <h3>Staff Members</h3>
+                <ul id="staffList">
+                    <!-- Staff entries will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize staff list
+        const staffList = [];
+
+        // Function to add staff
+        function addStaff() {
+            const staffName = document.getElementById('staffName').value;
+            const staffEmail = document.getElementById('staffEmail').value;
+            const staffRole = document.getElementById('staffRole').value;
+
+            if (staffName && staffEmail && staffRole) {
+                // Create new staff object
+                const newStaff = {
+                    name: staffName,
+                    email: staffEmail,
+                    role: staffRole
+                };
+
+                // Add new staff to the list
+                staffList.push(newStaff);
+
+                // Update the staff list in the DOM
+                updateStaffList();
+                
+                // Clear the input fields
+                document.getElementById('staffName').value = '';
+                document.getElementById('staffEmail').value = '';
+                document.getElementById('staffRole').value = 'Staff';
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        // Function to update staff list on the page
+        function updateStaffList() {
+            const staffListContainer = document.getElementById('staffList');
+            staffListContainer.innerHTML = '';
+
+            staffList.forEach((staff, index) => {
+                const staffItem = document.createElement('li');
+                staffItem.innerHTML = `
+                    <span>${staff.name} (${staff.role})</span>
+                    <span>${staff.email}</span>
+                    <button class="remove-button" onclick="removeStaff(${index})">Remove</button>
+                `;
+                staffListContainer.appendChild(staffItem);
+            });
+        }
+
+        // Function to remove staff
+        function removeStaff(index) {
+            staffList.splice(index, 1);
+            updateStaffList();
+        }
+    </script>
+</body>
+</html>

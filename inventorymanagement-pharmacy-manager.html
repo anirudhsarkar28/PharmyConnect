@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Inventory - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .card table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        .card th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .card th {
+            background-color: #009688;
+            color: white;
+        }
+
+        .btn {
+            background-color: #009688;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00796b;
+        }
+
+        .adjust-form input, .adjust-form select {
+            width: 200px;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .adjust-form button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #009688;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .adjust-form button:hover {
+            background-color: #00796b;
+        }
+
+        .add-medicine-form input, .add-medicine-form select {
+            width: 200px;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .add-medicine-form button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #009688;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-medicine-form button:hover {
+            background-color: #00796b;
+        }
+    </style>
+</head>
+<body>
+    <header>Manage Inventory - PharmyConnect</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="Pharmacy-Manager-Dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="card">
+                <h3>Current Inventory</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Stock</th>
+                            <th>Expiration Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTableBody">
+                        <tr>
+                            <td colspan="4">Loading inventory...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Adjust Inventory</h3>
+                <form class="adjust-form" id="inventoryAdjustmentForm">
+                    <label for="medicine">Select Medicine</label>
+                    <select id="medicineSelect" required>
+                        <!-- Medicine options will be populated dynamically -->
+                    </select>
+
+                    <label for="adjustmentType">Adjustment Type</label>
+                    <select id="adjustmentType" required>
+                        <option value="add">Add Stock</option>
+                        <option value="remove">Remove Stock</option>
+                        <option value="expire">Mark as Expired</option>
+                    </select>
+
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" min="1" required>
+
+                    <button type="submit" id="adjustInventoryBtn">Adjust Inventory</button>
+                </form>
+            </div>
+
+            <!-- Add New Medicine Form -->
+            <div class="card">
+                <h3>Add New Medicine</h3>
+                <form class="add-medicine-form" id="addMedicineForm">
+                    <label for="newMedicineName">Medicine Name</label>
+                    <input type="text" id="newMedicineName" required>
+
+                    <label for="newStock">Initial Stock</label>
+                    <input type="number" id="newStock" min="1" required>
+
+                    <label for="newExpirationDate">Expiration Date</label>
+                    <input type="date" id="newExpirationDate" required>
+
+                    <button type="submit">Add Medicine</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated inventory data
+        const inventoryItems = [
+            { name: 'Aspirin', stock: 50, expirationDate: '2025-12-31' },
+            { name: 'Paracetamol', stock: 10, expirationDate: '2024-10-20' },
+            { name: 'Ibuprofen', stock: 20, expirationDate: '2026-03-15' }
+        ];
+
+        // Populate inventory table
+        const inventoryTableBody = document.getElementById('inventoryTableBody');
+        const medicineSelect = document.getElementById('medicineSelect');
+
+        function renderInventoryTable() {
+            inventoryTableBody.innerHTML = '';
+            inventoryItems.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.stock}</td>
+                    <td>${item.expirationDate}</td>
+                    <td><button class="btn" onclick="viewMedicineDetails('${item.name}')">View</button></td>
+                `;
+                inventoryTableBody.appendChild(row);
+            });
+        }
+
+        function populateMedicineSelect() {
+            medicineSelect.innerHTML = ''; // Clear existing options
+            inventoryItems.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.name;
+                option.textContent = item.name;
+                medicineSelect.appendChild(option);
+            });
+        }
+
+        // View Medicine Details function
+        function viewMedicineDetails(medicineName) {
+            alert(`Displaying details for ${medicineName}`);
+            // Implement redirection or modal to show more details
+        }
+
+        // Adjust Inventory form submission
+        document.getElementById('inventoryAdjustmentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const selectedMedicine = document.getElementById('medicineSelect').value;
+            const adjustmentType = document.getElementById('adjustmentType').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            const medicine = inventoryItems.find(item => item.name === selectedMedicine);
+
+            if (adjustmentType === 'add') {
+                medicine.stock += quantity;
+            } else if (adjustmentType === 'remove' && medicine.stock >= quantity) {
+                medicine.stock -= quantity;
+            } else if (adjustmentType === 'expire') {
+                medicine.stock = 0; // Mark as expired
+            }
+
+            renderInventoryTable();
+            alert('Inventory adjustment successful!');
+        });
+
+        // Add new medicine form submission
+        document.getElementById('addMedicineForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const newMedicineName = document.getElementById('newMedicineName').value;
+            const newStock = parseInt(document.getElementById('newStock').value);
+            const newExpirationDate = document.getElementById('newExpirationDate').value;
+
+            // Add new medicine to the inventory
+            inventoryItems.push({ name: newMedicineName, stock: newStock, expirationDate: newExpirationDate });
+            
+            // Re-render inventory table and medicine selection
+            renderInventoryTable();
+            populateMedicineSelect();
+            alert('New medicine added successfully!');
+        });
+
+        // Initial rendering
+        renderInventoryTable();
+        populateMedicineSelect();
+    </script>
+</body>
+</html>

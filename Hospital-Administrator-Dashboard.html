@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Administrator Dashboard - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .inventory-list, .user-list {
+            font-size: 0.9em;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .inventory-list li, .user-list li {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+
+        .alert {
+            color: red;
+            font-weight: bold;
+        }
+
+        .add-user-form input {
+            width: 200px;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .add-user-form button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #009688;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-user-form button:hover {
+            background-color: #00796b;
+        }
+    </style>
+</head>
+<body>
+    <header>Hospital Administrator Dashboard</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#" onclick="loadDashboard()">Dashboard</a></li>
+                <li><a href="#" onclick="loadInventory()">View Inventories</a></li>
+                <li><a href="#" onclick="loadAddUser()">Add Doctor</a></li>
+            </ul>
+        </div>
+        <div class="content" id="contentArea">
+            <div class="card">
+                <h3>Dashboard Overview</h3>
+                <p>Loading dashboard data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated data for demonstration
+        const inventories = [
+            { pharmacy: 'Pharmacy A', medicines: [{ name: 'Aspirin', stock: 100, expirationDate: '2025-06-01' }, { name: 'Paracetamol', stock: 50, expirationDate: '2024-11-01' }] },
+            { pharmacy: 'Pharmacy B', medicines: [{ name: 'Ibuprofen', stock: 200, expirationDate: '2026-01-01' }, { name: 'Amoxicillin', stock: 150, expirationDate: '2025-05-15' }] }
+        ];
+
+        const doctors = ['Dr. John Doe', 'Dr. Jane Smith'];
+
+        // Load Dashboard
+        function loadDashboard() {
+            document.getElementById("contentArea").innerHTML = `
+                <div class="card">
+                    <h3>Hospital Operations Overview</h3>
+                    <ul class="inventory-list">
+                        <li>Patient Flow: 120 patients in the hospital</li>
+                        <li>Available Medications: 500+</li>
+                        <li>Critical Alerts: 2</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Load Inventory List
+        function loadInventory() {
+            let inventoryHTML = '';
+            inventories.forEach(pharmacy => {
+                inventoryHTML += `
+                    <div class="card">
+                        <h3>${pharmacy.pharmacy} - Inventory</h3>
+                        <ul class="inventory-list">
+                            ${pharmacy.medicines.map(medicine => `
+                                <li>${medicine.name}: Stock - ${medicine.stock} | Expiry Date: ${medicine.expirationDate}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+
+            document.getElementById("contentArea").innerHTML = inventoryHTML;
+        }
+
+        // Load Add User (Add Doctor) Form
+        function loadAddUser() {
+            document.getElementById("contentArea").innerHTML = `
+                <div class="card">
+                    <h3>Add New Doctor</h3>
+                    <form class="add-user-form" id="addDoctorForm">
+                        <label for="doctorName">Doctor Name</label>
+                        <input type="text" id="doctorName" placeholder="Enter Doctor's Name" required>
+                        <button type="submit">Add Doctor</button>
+                    </form>
+                </div>
+            `;
+
+            // Add doctor form submission
+            document.getElementById('addDoctorForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const doctorName = document.getElementById('doctorName').value;
+                if (doctorName) {
+                    doctors.push(doctorName);
+                    alert(`Doctor ${doctorName} added successfully!`);
+                }
+            });
+        }
+
+        // Default load dashboard content
+        loadDashboard();
+    </script>
+</body>
+</html>

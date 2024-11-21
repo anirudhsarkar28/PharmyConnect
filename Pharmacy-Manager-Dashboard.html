@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Manager Dashboard - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .inventory-list, .analytics-list, .stock-list, .alerts-list, .user-list {
+            font-size: 0.9em;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .inventory-list li, .analytics-list li, .stock-list li, .alerts-list li, .user-list li {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+
+        .alert {
+            color: red;
+            font-weight: bold;
+        }
+
+        .user-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-list button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .user-list button:hover {
+            background-color: #00796b;
+        }
+    </style>
+</head>
+<body>
+    <header>Pharmacy Manager Dashboard</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="inventorymanagement-pharmacy-manager.html">Inventory Management</a></li>
+                <li><a href="reportsanalytics-pharmacy-manager.html">Reports and Analytics</a></li>
+                <li><a href="usermanagement-pharmacy-manager.html">User Management</a></li>
+                <li><a href="help-pharmacy-manager.html">Help & Support</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Dashboard Section -->
+            <div class="card">
+                <h3>Overview</h3>
+                <p><strong>Total Inventory:</strong> <span id="totalInventory">500</span> items</p>
+                <p><strong>Low Stock Alerts:</strong> <span id="lowStockAlerts">5</span> items</p>
+            </div>
+            
+            <!-- Inventory Management Section -->
+            <div class="card">
+                <h3>Inventory Management</h3>
+                <ul class="inventory-list" id="inventoryList">
+                    <li>Item 1 - 100 units - Expiring soon</li>
+                    <li>Item 2 - 200 units - In stock</li>
+                    <li>Item 3 - 50 units - Expired</li>
+                    <li>Item 4 - 30 units - Low Stock</li>
+                    <li>Item 5 - 300 units - In stock</li>
+                </ul>
+            </div>
+
+            <!-- Alerts Section -->
+            <div class="card">
+                <h3>Alerts</h3>
+                <ul class="alerts-list" id="alertsList">
+                    <li class="alert">Low stock on Item 1</li>
+                    <li class="alert">Item 3 expired</li>
+                    <li class="alert">Transfer required for Item 2</li>
+                </ul>
+            </div>
+
+            <!-- User Management Section -->
+            <div class="card">
+                <h3>User Management</h3>
+                <h4>Pharmacy Staff</h4>
+                <ul class="user-list" id="userList">
+                    <li>
+                        <span>John Doe - Stock Manager</span>
+                        <div>
+                            <button>View</button>
+                            <button>Deactivate</button>
+                            <button>Delete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <span>Jane Smith - Cashier</span>
+                        <div>
+                            <button>View</button>
+                            <button>Deactivate</button>
+                            <button>Delete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <span>Robert Brown - Pharmacy Assistant</span>
+                        <div>
+                            <button>View</button>
+                            <button>Deactivate</button>
+                            <button>Delete</button>
+                        </div>
+                    </li>
+                </ul>
+                <button>Add New User</button>
+            </div>
+
+            <!-- Add/Edit User Page -->
+            <div class="card" style="display:none;" id="addEditUserPage">
+                <h3>Add/Edit User</h3>
+                <form>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required><br><br>
+                    
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required><br><br>
+
+                    <label for="role">Role:</label>
+                    <select id="role" name="role">
+                        <option value="cashier">Cashier</option>
+                        <option value="stock_manager">Stock Manager</option>
+                        <option value="assistant">Pharmacy Assistant</option>
+                    </select><br><br>
+
+                    <label for="contact">Contact Info:</label>
+                    <input type="text" id="contact" name="contact"><br><br>
+
+                    <button type="submit">Save User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Handle add/edit user form visibility
+        const addNewUserButton = document.querySelector("button");
+        const addEditUserPage = document.getElementById("addEditUserPage");
+        
+        addNewUserButton.addEventListener("click", () => {
+            addEditUserPage.style.display = "block";
+        });
+
+        // JavaScript logic for dynamic content loading (if required)
+        document.getElementById('inventoryList').innerHTML = `
+            <li>Item 1 - 100 units - Expiring soon</li>
+            <li>Item 2 - 200 units - In stock</li>
+            <li>Item 3 - 50 units - Expired</li>
+            <li>Item 4 - 30 units - Low Stock</li>
+            <li>Item 5 - 300 units - In stock</li>
+        `;
+    </script>
+</body>
+</html>

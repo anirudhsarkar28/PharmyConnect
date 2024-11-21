@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Staff Dashboard - PharmyConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            width: 20%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            background-color: white;
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .inventory-list, .prescription-list, .stock-alerts-list {
+            font-size: 0.9em;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .inventory-list li, .prescription-list li, .stock-alerts-list li {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+
+        .stock-alert {
+            color: red;
+            font-weight: bold;
+        }
+
+        .btn {
+            background-color: #009688;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00796b;
+        }
+
+    </style>
+</head>
+<body>
+    <header>Pharmacy Staff Dashboard</header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="inventorymanagement-pharmacy-staff.html">Manage Inventory</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="card">
+                <h3>Inventory Management</h3>
+                <ul class="inventory-list" id="inventoryList">
+                    <li>Loading inventory...</li>
+                </ul>
+                <button class="btn" id="manageInventoryBtn">Manage Inventory</button>
+            </div>
+            <div class="card">
+                <h3>Stock Alerts</h3>
+                <ul class="stock-alerts-list" id="stockAlertsList">
+                    <li>No critical stock issues.</li>
+                </ul>
+                <button class="btn" id="viewStockAlertsBtn">View Alerts</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated data for the pharmacy staff dashboard
+        const inventoryList = document.getElementById('inventoryList');
+        const prescriptionList = document.getElementById('prescriptionList');
+        const stockAlertsList = document.getElementById('stockAlertsList');
+
+        // Example inventory items
+        const inventoryItems = [
+            { name: 'Aspirin', stock: 50, expirationDate: '2025-12-31' },
+            { name: 'Paracetamol', stock: 10, expirationDate: '2024-10-20' },
+            { name: 'Ibuprofen', stock: 20, expirationDate: '2026-03-15' }
+        ];
+
+        // Example prescriptions
+        const prescriptions = [
+            { patient: 'John Doe', doctor: 'Dr. Smith', medication: 'Aspirin', status: 'Pending' },
+            { patient: 'Jane Doe', doctor: 'Dr. Green', medication: 'Paracetamol', status: 'Fulfilled' },
+            { patient: 'Jim Beam', doctor: 'Dr. Brown', medication: 'Ibuprofen', status: 'Pending' }
+        ];
+
+        // Example stock alerts
+        const stockAlerts = [
+            { message: 'Paracetamol is running low on stock!', type: 'Low Stock' },
+            { message: 'Aspirin is near expiration (2025-12-31)', type: 'Expiring Soon' }
+        ];
+
+        // Display inventory
+        inventoryItems.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - Stock: ${item.stock} - Expiry: ${item.expirationDate}`;
+            if (item.stock < 15) {
+                li.classList.add('stock-alert');
+            }
+            inventoryList.appendChild(li);
+        });
+
+        // Display prescriptions
+        prescriptions.forEach(prescription => {
+            const li = document.createElement('li');
+            li.textContent = `${prescription.patient} - Doctor: ${prescription.doctor} - Medication: ${prescription.medication} - Status: ${prescription.status}`;
+            prescriptionList.appendChild(li);
+        });
+
+        // Display stock alerts
+        stockAlerts.forEach(alert => {
+            const li = document.createElement('li');
+            li.textContent = `${alert.message}`;
+            if (alert.type === 'Low Stock') {
+                li.classList.add('stock-alert');
+            }
+            stockAlertsList.appendChild(li);
+        });
+
+        // Event listeners for buttons
+        document.getElementById('manageInventoryBtn').addEventListener('click', () => {
+            alert('Redirecting to inventory management page...');
+            // Implement redirection to inventory management page
+        });
+
+        document.getElementById('viewPrescriptionsBtn').addEventListener('click', () => {
+            alert('Redirecting to prescription management page...');
+            // Implement redirection to prescription fulfillment page
+        });
+
+        document.getElementById('viewStockAlertsBtn').addEventListener('click', () => {
+            alert('Redirecting to stock alerts management page...');
+            // Implement redirection to stock alerts page
+        });
+    </script>
+</body>
+</html>

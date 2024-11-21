@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Manage Inventory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.8rem;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #00796b;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            color: #004d40;
+        }
+
+        .content {
+            margin-left: 22%;
+            margin-top: 80px;
+            width: 75%;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00796b;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inventory-table th,
+        .inventory-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .inventory-table th {
+            background-color: #00796b;
+            color: white;
+        }
+
+        .inventory-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .inventory-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .critical {
+            color: red;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                border-right: none;
+                margin-bottom: 20px;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>Doctor Dashboard</header>
+
+    <aside class="sidebar">
+        <a href="doctor-dashboard.html">Dashboard</a>
+    </aside>
+
+    <main class="content">
+        <div class="title">Current Medication Inventory</div>
+        <table class="inventory-table" id="inventoryTable">
+            <thead>
+                <tr>
+                    <th>Medicine Name</th>
+                    <th>Batch Number</th>
+                    <th>Stock Available</th>
+                    <th>Expiration Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        // Example inventory data
+        const inventoryData = [
+            { name: "Paracetamol", batch: "B1234", stock: 120, expiry: "2024-12-01", status: "Available" },
+            { name: "Amoxicillin", batch: "B5678", stock: 15, expiry: "2024-11-15", status: "Low Stock" },
+            { name: "Ibuprofen", batch: "B9101", stock: 0, expiry: "2025-05-01", status: "Out of Stock" },
+            { name: "Cetrizine", batch: "B1213", stock: 50, expiry: "2024-09-01", status: "Available" },
+            { name: "Metformin", batch: "B1415", stock: 5, expiry: "2023-12-31", status: "Low Stock" },
+        ];
+
+        function loadInventory() {
+            const inventoryTable = document.getElementById("inventoryTable").getElementsByTagName("tbody")[0];
+
+            inventoryData.forEach((item) => {
+                const row = inventoryTable.insertRow();
+
+                const cellName = row.insertCell(0);
+                const cellBatch = row.insertCell(1);
+                const cellStock = row.insertCell(2);
+                const cellExpiry = row.insertCell(3);
+                const cellStatus = row.insertCell(4);
+
+                cellName.textContent = item.name;
+                cellBatch.textContent = item.batch;
+                cellStock.textContent = item.stock;
+                cellExpiry.textContent = item.expiry;
+
+                cellStatus.textContent = item.status;
+                if (item.status === "Low Stock" || item.status === "Out of Stock") {
+                    cellStatus.classList.add("critical");
+                }
+            });
+        }
+
+        // Load inventory on page load
+        document.addEventListener("DOMContentLoaded", loadInventory);
+    </script>
+</body>
+</html>
